@@ -1,4 +1,3 @@
-# TODO: Put your names here.
 # Name: Nishanth Navali
 # Name: Jordan Conklin
 
@@ -49,7 +48,15 @@ for i in range(n):
 # Use the methods of the Photon class to prepare each photon.
 photonArray = [photon.Photon() for i in range(n)]
 # TODO: Put your code here.
-
+for i in range(n):
+    if(photonAlice[i] == 'H'):
+        photonArray[i].prepareH(1)
+    elif(photonAlice[i] == 'V'):
+        photonArray[i].prepareV(1)
+    elif (photonAlice[i] == 'D'):
+        photonArray[i].prepareD(1)
+    elif (photonAlice[i] == 'A'):
+        photonArray[i].prepareA(1)
 
 # Eve   --------------------------------------------
 
