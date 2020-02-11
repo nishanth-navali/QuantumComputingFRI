@@ -33,15 +33,15 @@ for i in range(n):
 # This should be a string of the characters 'H', 'V', 'D', 'A'.
 photonAlice = ""
 for i in range(n):
-    if(keyAlice[i] == '0'):
-        if(basisAlice[i] == '+'):
+    if keyAlice[i] == '0':
+        if basisAlice[i] == '+':
             photonAlice += 'H'
-        elif(basisAlice[i] == 'x'):
+        elif basisAlice[i] == 'x':
             photonAlice += 'D'
-    elif(keyAlice[i] == '1'):
-        if (basisAlice[i] == '+'):
+    elif keyAlice[i] == '1':
+        if  basisAlice[i] == '+':
             photonAlice += 'V'
-        elif (basisAlice[i] == 'x'):
+        elif basisAlice[i] == 'x':
             photonAlice += 'A'
 
 # Alice prepares and sends each photon.
@@ -49,13 +49,13 @@ for i in range(n):
 photonArray = [photon.Photon() for i in range(n)]
 # TODO: Put your code here.
 for i in range(n):
-    if(photonAlice[i] == 'H'):
+    if photonAlice[i] == 'H':
         photonArray[i].prepareH(1)
-    elif(photonAlice[i] == 'V'):
+    elif photonAlice[i] == 'V':
         photonArray[i].prepareV(1)
-    elif (photonAlice[i] == 'D'):
+    elif photonAlice[i] == 'D':
         photonArray[i].prepareD(1)
-    elif (photonAlice[i] == 'A'):
+    elif photonAlice[i] == 'A':
         photonArray[i].prepareA(1)
 
 # Eve   --------------------------------------------
