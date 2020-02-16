@@ -6,7 +6,7 @@ import photon
 import random
 import numpy
 
-n = 100 # number of photons
+n = 1000 # number of photons
 
 # Alice --------------------------------------------
 
@@ -96,6 +96,11 @@ outcomeEve = ""
 # This should be a string of '+'s and 'x's with '+'=H/V, 'x'=D/A.
 basisBob = ""
 # TODO: Put your code here.
+for i in range(n):
+    if random.randint(0, 1) == 0:  # Flip a coin (0 or 1).
+        basisBob += '+'
+    else:
+        basisBob += 'x'
 
 # Bob performs a measurement on each photon.
 # Use the methods of the Photon class to measure each photon.
@@ -103,12 +108,22 @@ basisBob = ""
 # Use the convention 'H','V','D','A', ' '=not measured
 outcomeBob = ""
 # TODO: Put your code here.
+for i in range(n):
+    if basisBob[i] == '+':
+        outcomeBob += qubitArray[i].measureHV()
+    else:
+        outcomeBob += qubitArray[i].measureDA()
 
 # Bob infers the raw key.
 # keyBob should be a string of n characters.
 # Use the convention '0', '1', '-'=invalid measurement
 keyBob = ""
 # TODO: Put your code here.
+for i in range(n):
+    if outcomeBob[i] == 'H' or outcomeBob[i] == 'D':
+        keyBob += '0'
+    else:
+        keyBob += '1'
 
 
 # -----------------------------------------------------------
@@ -125,6 +140,13 @@ keyBob = ""
 siftedAlice = ""
 siftedBob   = ""
 # TODO: Put your code here.
+for i in range (n):
+    if basisAlice[i] == basisBob[i]:
+        siftedAlice += keyAlice[i]
+        siftedBob += keyBob[i]
+    else:
+        siftedAlice += ' '
+        siftedBob += ' '
 
 # Alice and Bob use a portion of their sifted keys to estimate the quantum bit error rate (QBER).
 # sampleIndex should be a string of n characters.
@@ -135,6 +157,20 @@ siftedBob   = ""
 sampleIndex = ""
 sampledBobQBER = 0
 # TODO: Put your code here.
+equalCount = 0;
+revealCount = 0;
+for i in range (n):
+    if (random.randint(0,7) == 5) and (siftedAlice[i] != ' '):
+        sampleIndex += '1'
+        revealCount += 1
+    else :
+        sampleIndex += '0'
+for i in range (n):
+    if sampleIndex[i] == '1':
+        if siftedAlice[i] == siftedBob[i]:
+            equalCount += 1
+
+sampledBobQBER = 100.0 * (equalCount / revealCount)
 
 # Alice and Bob remove the portion of their sifted keys that was sampled.
 # Since a portion of the sifted key was publicly revealed, it cannot be used.
@@ -143,12 +179,20 @@ sampledBobQBER = 0
 secureAlice = ""
 secureBob = ""
 # TODO: Put your code here.
+for i in range(n):
+    if sampleIndex[i] == '1':
+        secureAlice += " "
+        secureBob += " "
+    else:
+        secureAlice += siftedAlice[i]
+        secureBob += siftedBob[i]
 
 # Alice and Bob make a hard determination whether the channel is secure.
 # If it looks like there's something fishy, better hit the kill switch!
 channelSecure = True # default value, to be changed to False if Eve suspected
 # TODO: Put your code here.
-
+if sampledBobQBER > 85:
+    channelSecure = False
 
 # Eve ------------------------------------------------------------------
 
