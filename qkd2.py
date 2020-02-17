@@ -122,8 +122,10 @@ keyBob = ""
 for i in range(n):
     if outcomeBob[i] == 'H' or outcomeBob[i] == 'D':
         keyBob += '0'
-    else:
+    elif outcomeBob[i] == 'V' or outcomeBob[i] == 'A':
         keyBob += '1'
+    else:
+        keyBob += '-'
 
 
 # -----------------------------------------------------------
