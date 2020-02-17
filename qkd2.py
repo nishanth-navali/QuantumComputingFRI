@@ -6,7 +6,7 @@ import photon
 import random
 import numpy
 
-n = 1000 # number of photons
+n = 100 # number of photons
 
 # Alice --------------------------------------------
 
@@ -50,13 +50,13 @@ photonArray = [photon.Photon() for i in range(n)]
 # TODO: Put your code here.
 for i in range(n):
     if photonAlice[i] == 'H':
-        photonArray[i].prepareH(1)
+        photonArray[i].prepareH(10)
     elif photonAlice[i] == 'V':
-        photonArray[i].prepareV(1)
+        photonArray[i].prepareV(10)
     elif photonAlice[i] == 'D':
-        photonArray[i].prepareD(1)
+        photonArray[i].prepareD(10)
     elif photonAlice[i] == 'A':
-        photonArray[i].prepareA(1)
+        photonArray[i].prepareA(10)
 
 # Eve   --------------------------------------------
 
@@ -110,9 +110,9 @@ outcomeBob = ""
 # TODO: Put your code here.
 for i in range(n):
     if basisBob[i] == '+':
-        outcomeBob += qubitArray[i].measureHV()
+        outcomeBob += photonArray[i].measureHV(random.uniform(0, 0.1))
     else:
-        outcomeBob += qubitArray[i].measureDA()
+        outcomeBob += photonArray[i].measureDA(random.uniform(0, 0.1))
 
 # Bob infers the raw key.
 # keyBob should be a string of n characters.
@@ -162,7 +162,7 @@ sampledBobQBER = 0
 equalCount = 0;
 revealCount = 0;
 for i in range (n):
-    if (random.randint(0,7) == 5) and (siftedAlice[i] != ' '):
+    if (random.randint(0,2) == 1) and (siftedBob[i] != ' '):
         sampleIndex += '1'
         revealCount += 1
     else :
@@ -172,7 +172,7 @@ for i in range (n):
         if siftedAlice[i] == siftedBob[i]:
             equalCount += 1
 
-sampledBobQBER = 100.0 * (equalCount / revealCount)
+sampledBobQBER = 1 - (equalCount / revealCount)
 
 # Alice and Bob remove the portion of their sifted keys that was sampled.
 # Since a portion of the sifted key was publicly revealed, it cannot be used.
@@ -193,7 +193,7 @@ for i in range(n):
 # If it looks like there's something fishy, better hit the kill switch!
 channelSecure = True # default value, to be changed to False if Eve suspected
 # TODO: Put your code here.
-if sampledBobQBER > 85:
+if sampledBobQBER > 0.09:
     channelSecure = False
 
 # Eve ------------------------------------------------------------------
@@ -263,6 +263,7 @@ print("basisAlice  = " + basisAlice)
 print("basisBob    = " + basisBob)
 print("basisEve    = " + basisEve)
 print("")
+print("outcomeBob  = " + outcomeBob)
 print("keyAlice    = " + keyAlice)
 print("keyBob      = " + keyBob)
 print("keyEve      = " + keyEve)
