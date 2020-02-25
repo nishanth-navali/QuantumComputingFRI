@@ -81,10 +81,11 @@ for i in range(n):
 outcomeEve = ""
 # TODO: Put your code here.
 for i in range(n):
+    probDarkCountTemp_EVE = eval(probDarkCount)
     if basisEve[i] == '+':
-        outcomeEve += photonArray[i].measureHV(random.uniform(0, 0.1))
+        outcomeEve += photonArray[i].measureHV(probDarkCountTemp_EVE)
     elif basisEve[i] == 'x':
-        outcomeEve += photonArray[i].measureDA(random.uniform(0, 0.1))
+        outcomeEve += photonArray[i].measureDA(probDarkCountTemp_EVE)
     else:
         outcomeEve += ' '
 # Eve resends photons to Bob.
