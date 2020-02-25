@@ -6,7 +6,7 @@ import photon
 import random
 import numpy
 
-n = 175 # number of photons
+n = 125 # number of photons TODO: Change back to 175
 avgPhotonNum = 'random.uniform(.75, 3)' # <1% qber and ~425-500 kbps at ~6
 probDarkCount = 'random.uniform(.15, .5)' # <1% qber and ~425-500 kbsp at ~.04
 sampleDenom = 4 # samples 1 out of x bits
@@ -63,19 +63,30 @@ for i in range(n):
 # Use the convention '0'=ignored, '1'=intercepted
 interceptIndex = ""
 # TODO: Put your code here.
-
+for i in range(n):
+    interceptIndex += '1'
 # Eve chooses a basis to measure each intercepted photon.
 # basisEve should be a string of n characters.
 # Use the convention '+'=H/V, 'x'=D/A, ' '=not measured
 basisEve = ""
 # TODO: Put your code here.
-
+for i in range(n):
+    if interceptIndex[i] == '1':
+        basisEve += '+' if random.randint(0, 1) == 0 else 'x'
+    else:
+        basisEve += ' '
 # Eve performs a measurement on each photon.
 # outcomeEve should be a string of n characters.
 # Use the convention 'H','V','D','A', ' '=not measured
 outcomeEve = ""
 # TODO: Put your code here.
-
+for i in range(n):
+    if basisEve[i] == '+':
+        outcomeEve += photonArray[i].measureHV(random.uniform(0, 0.1))
+    elif basisEve[i] == 'x':
+        outcomeEve += photonArray[i].measureDA(random.uniform(0, 0.1))
+    else:
+        outcomeEve += ' '
 # Eve resends photons to Bob.
 # Be sure to handle the cases in which Eve gets an invalid measurement.
 # TODO: Put your code here.
@@ -188,7 +199,16 @@ channelSecure = True # default value, to be changed to False if Eve suspected
 # Use the convention '0', '1', '-'=invalid measurement, ' '=not measured
 keyEve = ""
 # TODO: Put your code here.
-
+for i in range(n):
+    switcher = {
+        'M' : '-',
+        'N' : '-',
+        'H' : '0',
+        'V' : '1',
+        'D' : '0',
+        'A' : '1'
+    }
+    keyEve += switcher.get(outcomeEve[i])
 # Eve extracts her sifted key.
 # Knowing what Alice and Bob have publically revealed, Eve
 # now selects which portion of her sifted key to keep.
