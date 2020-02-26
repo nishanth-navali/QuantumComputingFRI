@@ -6,7 +6,7 @@ import photon
 import random
 import numpy
 
-n = 125 # number of photons TODO: Change back to 175
+n = 100 # number of photons
 avgPhotonNum = 'random.uniform(.75, 3)' # <1% qber and ~425-500 kbps at ~6
 probDarkCount = 'random.uniform(.15, .5)' # <1% qber and ~425-500 kbsp at ~.04
 sampleDenom = 4 # samples 1 out of x bits
@@ -99,15 +99,14 @@ for i in range(n):
 # TODO: Put your code here.
 for i in range(n):
     if outcomeEve[i] == 'H':
-        qubitArray[i].prepareH()
+        photonArray[i].prepareH(random.uniform(.75, 3))
     elif outcomeEve[i] == 'V':
-        qubitArray[i].prepareV()
+        photonArray[i].prepareV(random.uniform(.75, 3))
     elif outcomeEve[i] == 'D':
-        qubitArray[i].prepareD()
+        photonArray[i].prepareD(random.uniform(.75, 3))
     elif outcomeEve[i] == 'A':
-        qubitArray[i].prepareA()
-    else:
-        quibitArray[i].prepareM()
+        photonArray[i].prepareA(random.uniform(.75, 3))
+
 
 
 # OPTIONAL: Put any other nasty tricks here.
@@ -219,15 +218,12 @@ channelSecure = True # default value, to be changed to False if Eve suspected
 keyEve = ""
 # TODO: Put your code here.
 for i in range(n):
-    switcher = {
-        'M' : '-',
-        'N' : '-',
-        'H' : '0',
-        'V' : '1',
-        'D' : '0',
-        'A' : '1'
-    }
-    keyEve += switcher.get(outcomeEve[i])
+    if outcomeEve[i] == 'H' or outcomeEve[i] == 'D':
+        keyEve += '0'
+    elif outcomeEve[i] == 'V' or outcomeEve[i] == 'A':
+        keyEve += '1'
+    else:
+        keyEve += '-'
 # Eve extracts her sifted key.
 # Knowing what Alice and Bob have publically revealed, Eve
 # now selects which portion of her sifted key to keep.
@@ -235,8 +231,11 @@ for i in range(n):
 # Use the '0', '1', ' '=removed
 stolenEve = ""
 # TODO: Put your code here.
-
-
+for i in range(n):
+    if sampleIndex[i] == '1':
+        stolenEve +=  ' '
+    else:
+        stolenEve += keyEve[i]
 # ANALYSIS -------------------------------------------------------------
 
 # Below is a standard set of metrics to evaluate each protocol.
