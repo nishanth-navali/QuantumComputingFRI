@@ -65,6 +65,8 @@ interceptIndex = ""
 # TODO: Put your code here.
 for i in range(n):
     interceptIndex += '1'
+
+
 # Eve chooses a basis to measure each intercepted photon.
 # basisEve should be a string of n characters.
 # Use the convention '+'=H/V, 'x'=D/A, ' '=not measured
@@ -75,6 +77,8 @@ for i in range(n):
         basisEve += '+' if random.randint(0, 1) == 0 else 'x'
     else:
         basisEve += ' '
+
+
 # Eve performs a measurement on each photon.
 # outcomeEve should be a string of n characters.
 # Use the convention 'H','V','D','A', ' '=not measured
@@ -88,9 +92,23 @@ for i in range(n):
         outcomeEve += photonArray[i].measureDA(probDarkCountTemp_EVE)
     else:
         outcomeEve += ' '
+
+
 # Eve resends photons to Bob.
 # Be sure to handle the cases in which Eve gets an invalid measurement.
 # TODO: Put your code here.
+for i in range(n):
+    if outcomeEve[i] == 'H':
+        qubitArray[i].prepareH()
+    elif outcomeEve[i] == 'V':
+        qubitArray[i].prepareV()
+    elif outcomeEve[i] == 'D':
+        qubitArray[i].prepareD()
+    elif outcomeEve[i] == 'A':
+        qubitArray[i].prepareA()
+    else:
+        quibitArray[i].prepareM()
+
 
 # OPTIONAL: Put any other nasty tricks here.
 
